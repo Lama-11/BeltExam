@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "Idea";
+}
+@* ViewBag.User *@
+@* ViewBag.Allideas *@
+@model Ideas
+<link rel="stylesheet" href="~/css/style.css" />
+
+<p>Hello @ViewBag.User.Name! - <a asp-action="LogOut" asp-controller="Home">Logout</a></p>
+
+<form asp-controller="Ideas" asp-action="CreateIdea" method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <textarea asp-for="Idea" cols="64" rows="4"></textarea><br>
+        </div>
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary"> Add Idea!</button>
+        </div>
+        <span class="text-danger" asp-validation-for="Idea"></span>
+    </div>
+    <br>
+</form>
+@if (ViewBag.Ideas.Count > 0)
+{
+    foreach (var idea in ViewBag.Ideas)
+    {
+        <div class="row">
+    <div class="col-md-6">
+        <div>
+            <a asp-action="OneUser" asp-controller="Ideas"
+                asp-route-userId="@ViewBag.User.UserId">@idea.PostedBy.Alias</a> says:
+            <br></br>
+            <p class="border">@idea.Idea</p>
+        </div>
+        <div>
+            <a asp-action="Like" asp-controller="Ideas" asp-route-ideaId="@idea.IdeaId">Like &nbsp;&nbsp;&nbsp;</a>
+            <a asp-action="OneIdea" asp-controller="Ideas" asp-route-ideaId="@idea.IdeaId">@idea.Likes.Count people</a>
+            like this.
+        </div>
+    </div>
+    <div class="col-md-6">
+        @if (idea.PostedBy.UserId == @ViewBag.User.UserId)
+                {
+                    <a asp-action="Delete" asp-controller="Ideas" asp-route-ideaId="@idea.IdeaId">
+                        <button id="delbutton" type="button" class="btn btn-danger btn-circle btn-lg">X</button> </a>
+                }
+            </div>
+        </div>
+        <br>
+        <hr>
+    }
+}

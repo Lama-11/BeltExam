@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Idea";
+}
+@model Ideas
+<link rel="stylesheet" href="~/css/style.css" />
+
+<p><a href="/brigth_ideas">Bright Ideas</a> | <a href="/logout">logout</a></p>
+
+<p><a href="/user/@Model.PostedBy.UserId">@Model.PostedBy.Alias</a> says:
+<div class="border">@Model.Idea</div>
+</p>
+<p>People who liked this post:</p>
+
+<table class="table table-striped table-light">
+    <thead>
+        <tr>
+            <th>Alias</th>
+            <th>Name</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var fan in Model.Likes)
+        {
+            <tr>
+                <td><a asp-action="OneUser" asp-controller="Ideas"
+                    asp-route-userId="@ViewBag.User.UserId">@fan.Users.Alias</a></td>
+                <td>@fan.Users.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
